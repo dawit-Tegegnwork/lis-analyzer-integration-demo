@@ -1,0 +1,3 @@
+ERROR Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
+ERROR Row 5: missing sample_id.
+ERROR Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.

@@ -1,0 +1,26 @@
+[
+  {
+    "sample_id": "SYN-2001",
+    "analyzer_code": "GLU_FAST",
+    "result_value": 98.1,
+    "unit": "mg/dL",
+    "instrument_id": "CHEM-01",
+    "captured_at": "2026-03-17T10:00:00Z"
+  },
+  {
+    "sample_id": "SYN-2002",
+    "analyzer_code": "CRP_SERUM",
+    "result_value": 7.6,
+    "unit": "mg/L",
+    "instrument_id": "CHEM-01",
+    "captured_at": "2026-03-17T10:03:00Z"
+  },
+  {
+    "sample_id": "SYN-2003",
+    "analyzer_code": "WBC_DIFF",
+    "result_value": 6.2,
+    "unit": "x10^3/uL",
+    "instrument_id": "HEM-02",
+    "captured_at": "2026-03-17T10:05:00Z"
+  }
+]

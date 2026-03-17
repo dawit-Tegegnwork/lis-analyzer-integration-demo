@@ -1,0 +1,59 @@
+[
+  {
+    "sample_id": "SYN-1001",
+    "lis_test_code": "GLU",
+    "lis_test_name": "Glucose",
+    "analyzer_code": "GLU_FAST",
+    "instrument_id": "CHEM-01",
+    "captured_at": "2026-03-17T09:05:00Z",
+    "result": {
+      "value": 132.4,
+      "unit": "mg/dL",
+      "reference_range": {
+        "low": 70.0,
+        "high": 110.0
+      },
+      "abnormal_flag": "high"
+    },
+    "status": "validated",
+    "source": "synthetic-demo"
+  },
+  {
+    "sample_id": "SYN-1002",
+    "lis_test_code": "HGB",
+    "lis_test_name": "Hemoglobin",
+    "analyzer_code": "HGB_WB",
+    "instrument_id": "HEM-02",
+    "captured_at": "2026-03-17T09:07:00Z",
+    "result": {
+      "value": 11.2,
+      "unit": "g/dL",
+      "reference_range": {
+        "low": 12.0,
+        "high": 17.5
+      },
+      "abnormal_flag": "low"
+    },
+    "status": "validated",
+    "source": "synthetic-demo"
+  },
+  {
+    "sample_id": "SYN-1003",
+    "lis_test_code": "WBC",
+    "lis_test_name": "White Blood Cell Count",
+    "analyzer_code": "WBC_DIFF",
+    "instrument_id": "HEM-02",
+    "captured_at": "2026-03-17T09:10:00Z",
+    "result": {
+      "value": 7.4,
+      "unit": "x10^3/uL",
+      "reference_range": {
+        "low": 4.0,
+        "high": 11.0
+      },
+      "abnormal_flag": "normal"
+    },
+    "status": "validated",
+    "source": "synthetic-demo"
+  }
+]
