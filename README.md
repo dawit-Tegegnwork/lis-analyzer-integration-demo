@@ -1,80 +1,90 @@
 # LIS Analyzer Integration Demo
 
-Public-safe portfolio demo that simulates a simple LIS to analyzer integration workflow using synthetic data only.
+Public-safe portfolio demo that simulates a small LIS-to-analyzer integration flow using synthetic laboratory data only.
 
-## What it does
+[![Tests](https://github.com/dawit-Tegegnwork/lis-analyzer-integration-demo/actions/workflows/test.yml/badge.svg)](https://github.com/dawit-Tegegnwork/lis-analyzer-integration-demo/actions/workflows/test.yml)
 
-- Reads analyzer result files in CSV or JSON
-- Maps analyzer machine codes to LIS test codes and names
-- Flags low and high values using basic reference thresholds
-- Logs validation errors for unknown codes, missing identifiers, and invalid numbers
-- Produces normalized JSON payloads ready for an LIS ingestion layer
-- Includes sample inputs, sample outputs, and automated tests
+## Overview
 
-## Project layout
+This repository shows the basic mechanics of a laboratory integration workflow:
 
-```text
-.
-├── pyproject.toml
-├── samples
-│   ├── input
-│   │   ├── analyzer_results.csv
-│   │   └── analyzer_results.json
-│   └── output
-│       ├── transformed_results.json
-│       └── validation.log
-├── src
-│   └── lis_analyzer_demo
-│       ├── cli.py
-│       ├── io.py
-│       ├── processor.py
-│       └── reference.py
-└── tests
-    └── test_demo.py
-```
+- load analyzer output from CSV or JSON
+- map machine codes to LIS-facing test codes
+- validate identifiers, units, duplicate results, and numeric values
+- flag abnormal results against simple reference thresholds
+- emit normalized payloads plus validation artifacts
 
-## Quick start
+It is intentionally small and synthetic. The goal is to show integration thinking clearly, not to imitate a full middleware product.
 
-Run the demo against the CSV sample:
+## Quick Demo
+
+Run the demo against the bundled CSV sample:
 
 ```bash
-cd ~/career-engine/lis-analyzer-integration-demo
-PYTHONPATH=src python -m lis_analyzer_demo samples/input/analyzer_results.csv \
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip setuptools
+python -m pip install -e .
+
+lis-analyzer-demo samples/input/analyzer_results.csv \
   --output samples/output/transformed_results.json \
-  --log samples/output/validation.log
+  --log samples/output/validation.log \
+  --errors-json samples/output/validation_errors.json \
+  --summary samples/output/processing_summary.json
 ```
 
-Run the tests:
+Expected result:
 
-```bash
-cd ~/career-engine/lis-analyzer-integration-demo
-PYTHONPATH=src python -m unittest discover -s tests -v
-```
+- `7` source records processed
+- `3` normalized payloads accepted
+- `4` validation errors written to log and JSON
 
-## Sample input
+## Demo Artifacts
 
-CSV:
+- [Sample CSV input](samples/input/analyzer_results.csv)
+- [Sample JSON input](samples/input/analyzer_results.json)
+- [Normalized LIS-ready payloads](samples/output/transformed_results.json)
+- [Validation log](samples/output/validation.log)
+- [Structured validation errors](samples/output/validation_errors.json)
+- [Processing summary](samples/output/processing_summary.json)
 
-```csv
-sample_id,analyzer_code,result_value,unit,instrument_id,captured_at
-SYN-1001,GLU_FAST,132.4,mg/dL,CHEM-01,2026-03-17T09:05:00Z
-SYN-1002,HGB_WB,11.2,g/dL,HEM-02,2026-03-17T09:07:00Z
-```
+## What The Demo Covers
 
-JSON:
+- CSV and JSON ingestion
+- machine-code to LIS-code mapping
+- reference-range flagging for low and high values
+- hard rejection of unit mismatches
+- structured validation for:
+  - unknown analyzer codes
+  - missing sample identifiers
+  - missing result values
+  - non-numeric results
+  - duplicate sample/test combinations
 
-```json
-[
-  {
-    "sample_id": "SYN-2001",
-    "analyzer_code": "GLU_FAST",
-    "result_value": 98.1,
-    "unit": "mg/dL"
-  }
-]
-```
+## Processing Flow
 
-## Sample output
+1. Load analyzer rows from CSV or JSON.
+2. Normalize field names into a consistent input contract.
+3. Validate required identifiers and result values.
+4. Map analyzer machine codes to LIS test metadata.
+5. Reject invalid rows and log the reason.
+6. Write accepted rows as normalized LIS-ready payloads.
+7. Write a summary and structured validation report.
+
+## Input Contract
+
+Accepted fields:
+
+- `sample_id` or `specimen_id`
+- `analyzer_code`, `machine_code`, or `test_code`
+- `result_value` or `value`
+- optional `unit`
+- optional `instrument_id` or `analyzer_id`
+- optional `captured_at` or `timestamp`
+
+## Example Output
+
+Normalized payload:
 
 ```json
 [
@@ -100,16 +110,65 @@ JSON:
 ]
 ```
 
-Validation errors are written to `samples/output/validation.log`:
+Validation log excerpt:
 
 ```text
-ERROR Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
-ERROR Row 5: missing sample_id.
-ERROR Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.
+ERROR row=4 code=non_numeric_result message=Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
+ERROR row=5 code=missing_sample_id message=Missing sample_id.
+ERROR row=6 code=unknown_analyzer_code message=Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.
+ERROR row=7 code=unit_mismatch message=Sample SYN-1006: unit mismatch for GLU_FAST. Expected mg/dL, received mmol/L.
 ```
 
-## Public-safe notes
+Summary report:
 
-- All files use synthetic sample IDs and non-sensitive results
-- No confidential or patient data is included
-- Thresholds and test mappings are simplified for demo purposes
+```json
+{
+  "total_records": 7,
+  "validated_records": 3,
+  "validation_error_count": 4,
+  "accepted_rate": 0.43
+}
+```
+
+## Project Layout
+
+```text
+.
+├── .github/workflows/test.yml
+├── LICENSE
+├── pyproject.toml
+├── samples
+│   ├── input
+│   └── output
+├── src/lis_analyzer_demo
+│   ├── cli.py
+│   ├── io.py
+│   ├── processor.py
+│   └── reference.py
+└── tests/test_demo.py
+```
+
+## Tests
+
+Run the test suite:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+## Why This Repo Is Public-Safe
+
+- all sample data is synthetic
+- no patient-identifiable information is included
+- no vendor credentials or private endpoints are used
+- mappings and thresholds are simplified for demonstration
+
+## Scope Notes
+
+This is a demo repository, not a production LIS integration engine. It does not include:
+
+- HL7 or ASTM messaging
+- instrument drivers
+- queueing or retry infrastructure
+- persistence layers
+- authentication or multi-tenant concerns

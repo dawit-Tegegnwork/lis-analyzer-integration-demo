@@ -1,3 +1,8 @@
-ERROR Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
-ERROR Row 5: missing sample_id.
-ERROR Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.
+ERROR row=4 code=non_numeric_result message=Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
+ERROR row=5 code=missing_sample_id message=Missing sample_id.
+ERROR row=6 code=unknown_analyzer_code message=Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.
+ERROR row=7 code=unit_mismatch message=Sample SYN-1006: unit mismatch for GLU_FAST. Expected mg/dL, received mmol/L.
+ERROR row=4 code=non_numeric_result message=Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM.
+ERROR row=5 code=missing_sample_id message=Missing sample_id.
+ERROR row=6 code=unknown_analyzer_code message=Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'.
+ERROR row=7 code=unit_mismatch message=Sample SYN-1006: unit mismatch for GLU_FAST. Expected mg/dL, received mmol/L.

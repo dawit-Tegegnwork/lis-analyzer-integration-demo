@@ -1,0 +1,30 @@
+[
+  {
+    "row_number": 4,
+    "sample_id": "SYN-1004",
+    "analyzer_code": "CRP_SERUM",
+    "error_code": "non_numeric_result",
+    "message": "Sample SYN-1004: non-numeric result 'bad_value' for CRP_SERUM."
+  },
+  {
+    "row_number": 5,
+    "sample_id": null,
+    "analyzer_code": "GLU_FAST",
+    "error_code": "missing_sample_id",
+    "message": "Missing sample_id."
+  },
+  {
+    "row_number": 6,
+    "sample_id": "SYN-1005",
+    "analyzer_code": "XYZ_PANEL",
+    "error_code": "unknown_analyzer_code",
+    "message": "Sample SYN-1005: unknown analyzer code 'XYZ_PANEL'."
+  },
+  {
+    "row_number": 7,
+    "sample_id": "SYN-1006",
+    "analyzer_code": "GLU_FAST",
+    "error_code": "unit_mismatch",
+    "message": "Sample SYN-1006: unit mismatch for GLU_FAST. Expected mg/dL, received mmol/L."
+  }
+]

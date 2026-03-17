@@ -27,9 +27,13 @@ def load_records(path: str | Path) -> list[dict]:
     raise ValueError(f"Unsupported input format: {input_path.suffix}")
 
 
-def write_payloads(path: str | Path, payloads: list[dict]) -> None:
+def write_json(path: str | Path, payload: list[dict] | dict) -> None:
     output_path = Path(path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as handle:
-        json.dump(payloads, handle, indent=2)
+        json.dump(payload, handle, indent=2)
         handle.write("\n")
+
+
+def write_payloads(path: str | Path, payloads: list[dict]) -> None:
+    write_json(path, payloads)
